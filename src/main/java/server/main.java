@@ -4,23 +4,35 @@ import server.models.Graph;
 
 public class main {
     public static void main(String[] args) {
-        Graph graph = new Graph();
-        graph.addVertex((short) 1,false);
-        graph.addVertex((short) 2,false);
-        graph.addVertex((short) 3,false);
-        graph.addVertex((short) 4,false);
-        graph.addVertex((short) 5,false);
-        graph.addVertex((short) 6,false);
-        graph.connectVertices((short) 1, (short) 2, (short) 0,0.0F,0);
-        graph.connectVertices((short) 2, (short) 3, (short) 0,0.0F,0);
-        graph.connectVertices((short) 3, (short) 4, (short) 0,0.0F,0);
-        graph.connectVertices((short) 4, (short) 5, (short) 0,0.0F,0);
-        graph.connectVertices((short) 5, (short) 6, (short) 0,0.0F,0);
-        graph.connectVertices((short) 6, (short) 1, (short) 0,0.0F,0);
-        graph.connectVertices((short) 5, (short) 2, (short) 0,0.0F,0);
-        graph.connectVertices((short) 6, (short) 3, (short) 0,0.0F,0);
+        Graph graph = build_city_Grid(5,4, 1F, (short) 1, 1F, (short) 1);
 
-        graph.printForApp();
+        graph.printGraph();
 
     }
+
+    public static Graph build_city_Grid(int rows, int cols, float hor_len, short hor_lanes, float ver_len, short ver_lanes){
+        Graph graph = new Graph();
+        for(int i=1; i<=rows*cols; i++){
+            graph.addVertex((short)(i-1),i%cols <=1 || i<=cols || i> cols*(rows-1));
+        }
+
+        for (int i=0; i<rows; i++){
+            for (int j=1; j<cols; j++){
+                graph.connectVertices(i*cols + j-1,i*cols + j,hor_lanes,hor_len,35);
+                graph.connectVertices(i*cols + j,i*cols + j-1,hor_lanes,hor_len,35);
+            }
+        }
+        for (int i=0; i<cols; i++){
+            for (int j=1; j<rows; j++){
+                graph.connectVertices(i + (j-1)*cols,i + j*cols, ver_lanes,ver_len,35);
+                graph.connectVertices(i + j*cols,i + (j-1)*cols, ver_lanes,ver_len,35);
+            }
+        }
+
+
+
+        return graph;
+    }
 }
+
+

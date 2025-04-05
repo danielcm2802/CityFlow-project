@@ -1,55 +1,43 @@
 package server.models;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 
+
+//graph class for representing the city
 public class Graph {
-    private LinkedList<Vertex> vertices;
+    public ArrayList<Vertex> vertices;
+
+    //constactor: creates an empty graph
     public Graph() {
-        vertices = new LinkedList<>();
+        vertices = new ArrayList<>();
     }
 
-
+    //adds vertex to the graph O(1)
     public void addVertex(short id, boolean has_lights) {
-        vertices.addFirst(new Vertex(id, has_lights));
+        vertices.addLast(new Vertex(id, has_lights));
     }
 
-    public void removeVertex(short id) {
-        for (Vertex v : vertices) {
-            if(v.id == id) {
-                vertices.remove(v);
-                return;
-            }
-        }
+    //removes vertex from graph O(n)
+    public void removeVertex(int idx) {
+        vertices.remove(idx);
     }
 
-    public void connectVertices(short from_id, short to_id, short lanes, float length, int average_speed) {
-        for (Vertex v : vertices) {
-            if(v.id == from_id) {
-                v.addAdjacentEdge(to_id, lanes, length, average_speed);
-                return;
-            }
-        }
+    //connects 2 vertices O(1)
+    public void connectVertices(int from_idx, int to_idx, short lanes, float length, int average_speed) {
+        vertices.get(from_idx).addAdjacentEdge(from_idx,to_idx, lanes, length, average_speed);
 
     }
 
-    public void disconnectVertices(short from_id, short to_id) {
-        for (Vertex v : vertices) {
-            if(v.id == from_id) {
-                v.removeAdjacentEdge(to_id);
-            }
-        }
+    //disconnects 2 vertices O(n)
+    public void disconnectVertices(short from_idx, short to_idx) {
+        vertices.get(from_idx).removeAdjacentEdge(to_idx);
     }
 
     public void printGraph() {
         System.out.println("vertices: ");
         for (Vertex v : vertices) {
-            System.out.println(v.toString());
-        }
-        System.out.println("edges: ");
-        for(Vertex v : vertices) {
-            for(Edge e: v.adjacent_edges){
-                System.out.println(e.toString());
-            }
+            System.out.println(v.toString()+": "+ v.getAdjacentEdges());
         }
     }
 

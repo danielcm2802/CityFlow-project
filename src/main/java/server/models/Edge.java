@@ -1,14 +1,14 @@
 package server.models;
 
 public class Edge {
-    public short from;
-    public short to;
+    public int from;
+    public int to;
     public short lanes;
     public int cars;
     public float length;
     public int average_speed;
 
-    public Edge(short from, short to, short lanes, float length, int average_speed) {
+    public Edge(int from, int to, short lanes, float length, int average_speed) {
         this.from = from;
         this.to = to;
         this.lanes = lanes;

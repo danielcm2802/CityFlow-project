@@ -2,11 +2,13 @@ package server.models;
 
 import java.util.LinkedList;
 
+//class for a vertex in a graph
 public class Vertex {
     public short id;
     public boolean has_lights;
     public LinkedList<Edge> adjacent_edges;
 
+    //constactor: creates a node/vertex that is not connected to anything
     public Vertex(short id, boolean has_lights) {
 
         this.id = id;
@@ -14,15 +16,18 @@ public class Vertex {
         this.adjacent_edges = new LinkedList<>();
     }
 
+    //function calculates weight of the vertex based on the junction O(1)
     public float calculateWeight() {
         return 10 + (has_lights ? 40 : 0);
     }
 
-    public void addAdjacentEdge(short to, short lanes, float length, int average_speed) {
-        this.adjacent_edges.addFirst(new Edge(this.id, to, lanes, length, average_speed));
+    //function adds a new edge coming out of the current vertex O(1)
+    public void addAdjacentEdge(int from, int to, short lanes, float length, int average_speed) {
+        this.adjacent_edges.addFirst(new Edge(from, to, lanes, length, average_speed));
     }
 
-    public void removeAdjacentEdge(short to) {
+    //function removes an edge that connected to the current vertex O(n)
+    public void removeAdjacentEdge(int to) {
         for (Edge e : this.adjacent_edges) {
             if (e.to == to) {
                 this.adjacent_edges.remove(e);
@@ -45,4 +50,11 @@ public class Vertex {
         }
     }
 
+    public String getAdjacentEdges() {
+        String adjacentEdges = "";
+        for (Edge e : this.adjacent_edges) {
+            adjacentEdges += e.to + ", ";
+        }
+        return adjacentEdges;
+    }
 }
