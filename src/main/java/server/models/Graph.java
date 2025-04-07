@@ -14,8 +14,8 @@ public class Graph {
     }
 
     //adds vertex to the graph O(1)
-    public void addVertex(short id, boolean has_lights) {
-        vertices.addLast(new Vertex(id, has_lights));
+    public void addVertex(short id, boolean has_lights,float x_cord, float y_cord) {
+        vertices.addLast(new Vertex(id, has_lights, x_cord, y_cord));
     }
 
     //removes vertex from graph O(n)

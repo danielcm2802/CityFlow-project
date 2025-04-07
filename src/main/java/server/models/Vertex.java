@@ -7,13 +7,17 @@ public class Vertex {
     public short id;
     public boolean has_lights;
     public LinkedList<Edge> adjacent_edges;
+    public float x_cord;
+    public float y_cord;
 
     //constactor: creates a node/vertex that is not connected to anything
-    public Vertex(short id, boolean has_lights) {
+    public Vertex(short id, boolean has_lights,float x_cord,float y_cord) {
 
         this.id = id;
         this.has_lights = has_lights;
         this.adjacent_edges = new LinkedList<>();
+        this.x_cord = x_cord;
+        this.y_cord = y_cord;
     }
 
     //function calculates weight of the vertex based on the junction O(1)
@@ -41,6 +45,8 @@ public class Vertex {
         return "Vertex{" +
                 "id=" + id +
                 ", has_lights=" + has_lights +
+                ", x_cord=" + x_cord +
+                ", y_cord=" + y_cord +
                 '}';
     }
 

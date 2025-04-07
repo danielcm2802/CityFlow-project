@@ -18,7 +18,7 @@ public class Edge {
     }
 
     public float calculateWeight() {
-        return length * average_speed;
+        return cars/(length * average_speed);
     }
 
     @Override
