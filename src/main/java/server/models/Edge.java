@@ -5,20 +5,20 @@ public class Edge {
     public int to;
     public short lanes;
     public int cars;
-    public float length;
-    public int average_speed;
+    public int length;
+    public int speed_limit;
 
-    public Edge(int from, int to, short lanes, float length, int average_speed) {
+    public Edge(int from, int to, short lanes, int length, int speed_limit) {
         this.from = from;
         this.to = to;
         this.lanes = lanes;
         this.cars = 0;
         this.length = length;
-        this.average_speed = average_speed;
+        this.speed_limit = speed_limit;
     }
 
     public float calculateWeight() {
-        return cars/(length * average_speed);
+        return (float) (length/(Math.max(2,(this.speed_limit/3.6)*(1-0.9*cars/(this.lanes*this.length)))));
     }
 
     @Override
@@ -29,7 +29,7 @@ public class Edge {
                 ": lanes=" + lanes +
                 ", cars=" + cars +
                 ", length=" + length +
-                ", average_speed=" + average_speed +
+                ", speed_limit=" + speed_limit +
                 '}';
     }
 }

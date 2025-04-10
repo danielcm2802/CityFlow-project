@@ -26,7 +26,7 @@ public class Vertex {
     }
 
     //function adds a new edge coming out of the current vertex O(1)
-    public void addAdjacentEdge(int from, int to, short lanes, float length, int average_speed) {
+    public void addAdjacentEdge(int from, int to, short lanes, int length, int average_speed) {
         this.adjacent_edges.addFirst(new Edge(from, to, lanes, length, average_speed));
     }
 

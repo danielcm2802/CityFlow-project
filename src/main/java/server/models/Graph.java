@@ -1,7 +1,6 @@
 package server.models;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 
 
 //graph class for representing the city
@@ -24,7 +23,7 @@ public class Graph {
     }
 
     //connects 2 vertices O(1)
-    public void connectVertices(int from_idx, int to_idx, short lanes, float length, int average_speed) {
+    public void connectVertices(int from_idx, int to_idx, short lanes, int length, int average_speed) {
         vertices.get(from_idx).addAdjacentEdge(from_idx,to_idx, lanes, length, average_speed);
 
     }
