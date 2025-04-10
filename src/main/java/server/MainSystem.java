@@ -4,10 +4,12 @@ import server.algo.CityBuilder;
 import server.algo.MinCostRoute;
 import server.algo.TrafficManager;
 import server.models.Graph;
+import server.models.Route;
 import server.models.Vehicle;
 
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.LinkedList;
 
 public class MainSystem {
     public Graph cityGraph;
@@ -20,11 +22,13 @@ public class MainSystem {
         tm.start();
     }
 
-    public void add_vehicle(int source, int destination) {
-        this.vehiclesRoutes.addLast(
-                new Vehicle(MinCostRoute.findMinCostRoute(this.cityGraph,source,destination)));
+    public void add_vehicle(int id,int source, int destination) {
+        synchronized (vehiclesRoutes) {
+            Vehicle vehicle = new Vehicle(id, MinCostRoute.findMinCostRoute(this.cityGraph, source, destination));
+            this.vehiclesRoutes.addLast(vehicle);
+            System.out.println("vehicle " + id + " added: "+ source + " -> " + destination);
+        }
 
-        System.out.println(this.vehiclesRoutes.getLast().routes.toString());
     }
 
     public void remove_vehicle(int indx) {

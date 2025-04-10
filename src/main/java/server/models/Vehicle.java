@@ -5,12 +5,15 @@ import java.time.*;
 import java.util.LinkedList;
 
 public class Vehicle{
+    public int id;
     public LinkedList<Route> routes;
     public LocalTime Start_time;
     public LocalTime ETA;
     public LocalTime next_removal;
+    public Edge current_edge;
 
-    public Vehicle(LinkedList<Route> routes) {
+    public Vehicle(int id,LinkedList<Route> routes) {
+        this.id = id;
         this.routes = routes;
         this.Start_time = LocalTime.now();
         this.ETA = Start_time.plusSeconds((long)this.calcTime());
@@ -23,7 +26,13 @@ public class Vehicle{
 
     public void removeRouteSection() {
         this.routes.removeFirst();
-        this.next_removal = Start_time.plusSeconds((long)this.routes.getFirst().seconds);
-        System.out.println("car got to: " + this.routes.getFirst().id);
+        this.next_removal = this.next_removal.plusSeconds((long)this.routes.getFirst().seconds);
+        System.out.println("vehicle " +this.id+ " got to: " + this.routes.getFirst().id);
+    }
+
+    public void printRoute() {
+        for (Route route : this.routes) {
+            System.out.println(route);
+        }
     }
 }

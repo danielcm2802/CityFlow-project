@@ -19,7 +19,7 @@ public class MinCostRoute {
     //builds the path from the parent array O(n)
     public static LinkedList<Route> createPath(Graph graph,int[] parent,float[] distance, int destination) {
         LinkedList<Route> path = new LinkedList<>();
-        path.addFirst(new Route(RoadType.Intersection,destination, graph.vertices.get(destination).calculateWeight()));
+        path.addFirst(new Route(RoadType.Intersection,destination, 0));
         int current = destination;
         while (parent[current] != -1) {
             path.addFirst(new Route(RoadType.Road,-1, distance[current]-distance[parent[current]]));
@@ -27,6 +27,7 @@ public class MinCostRoute {
             path.addFirst(new Route(RoadType.Intersection,current,graph.vertices.get(current).calculateWeight()));
 
         }
+        path.getFirst().seconds = 0;
         return path;
     }
 
