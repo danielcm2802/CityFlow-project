@@ -1,6 +1,8 @@
 package server.algo;
 
+import server.models.Edge;
 import server.models.Graph;
+import server.models.Vertex;
 
 public class CityBuilder {
 
@@ -8,7 +10,7 @@ public class CityBuilder {
         Graph graph = new Graph();
         for(int i=1; i<=rows*cols; i++){
             graph.addVertex((short)(i-1),!(i%cols <=1 || i<=cols || i> cols*(rows-1))
-                    ,(float)ver_len*(i%5),(float) hor_len*(i/5));
+                    ,(float)ver_len*((i-1)%cols),(float) hor_len*((i-1)/cols));
         }
 
         for (int i=0; i<rows; i++){
@@ -23,6 +25,21 @@ public class CityBuilder {
                 graph.connectVertices(i + j*cols,i + (j-1)*cols, ver_lanes,ver_len,50);
             }
         }
+        graph.cols = cols;
+        graph.rows = rows;
+        graph.hor_len = hor_len;
+        graph.ver_len = ver_len;
+        graph.ver_lanes = ver_lanes;
+        graph.hor_lanes = hor_lanes;
+
         return graph;
+    }
+
+    public static void reset_city(Graph cityGraph){
+        for(Vertex v: cityGraph.vertices){
+            for (Edge e: v.adjacent_edges){
+                e.cars = 0;
+            }
+        }
     }
 }

@@ -23,6 +23,8 @@ public class main {
 
 
 
+
+
         for(int i=0;i<20;i++) {
             ms.add_vehicle(i, r.nextInt(19), r.nextInt(19));
             try {

@@ -11,6 +11,8 @@ public class Vehicle{
     public LocalTime ETA;
     public LocalTime next_removal;
     public Edge current_edge;
+    public int last_route_id;
+
 
     public Vehicle(int id,LinkedList<Route> routes) {
         this.id = id;
@@ -25,6 +27,7 @@ public class Vehicle{
     };
 
     public void removeRouteSection() {
+        this.last_route_id = this.routes.getFirst().id;
         this.routes.removeFirst();
         this.next_removal = this.next_removal.plusSeconds((long)this.routes.getFirst().seconds);
         System.out.println("vehicle " +this.id+ " got to: " + this.routes.getFirst().id);

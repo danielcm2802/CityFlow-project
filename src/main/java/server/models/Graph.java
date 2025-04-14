@@ -1,11 +1,18 @@
 package server.models;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 
 //graph class for representing the city
-public class Graph {
+public class Graph implements Cloneable{
     public ArrayList<Vertex> vertices;
+    public int rows;
+    public int cols;
+    public int hor_len;
+    public short hor_lanes;
+    public int ver_len;
+    public short ver_lanes;
 
     //constactor: creates an empty graph
     public Graph() {
@@ -33,12 +40,22 @@ public class Graph {
         vertices.get(from_idx).removeAdjacentEdge(to_idx);
     }
 
+    public Edge findEdge(int from_idx, int to_idx) {
+        for(Edge e:this.vertices.get(from_idx).adjacent_edges){
+            if(e.to == to_idx){
+                return e;
+            }
+        }
+        return null;
+    }
+
     public void printGraph() {
         System.out.println("vertices: ");
         for (Vertex v : vertices) {
             System.out.println(v.toString()+": "+ v.getAdjacentEdges());
         }
     }
+
 
     public void printForApp() {
         for (Vertex v : vertices) {

@@ -50,6 +50,8 @@ public class Vertex {
                 '}';
     }
 
+
+
     public void printEdges() {
         for (Edge e : adjacent_edges) {
             System.out.println(e.toString());

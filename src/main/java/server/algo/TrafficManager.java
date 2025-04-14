@@ -18,24 +18,16 @@ public class TrafficManager extends Thread {
         this.graph = graph;
     }
 
-    public Edge findEdge(int from, int to) {
-        for(Edge e:graph.vertices.get(from).adjacent_edges){
-            if(e.to == to){
-                return e;
-            }
-        }
-        return null;
-    }
+
 
     public void updateEdges(Vehicle vehicle) {
         if(vehicle.routes.getFirst().id != -1) {
-            Edge e = findEdge(vehicle.routes.getFirst().id, vehicle.routes.get(2).id);
+            Edge e = graph.findEdge(vehicle.routes.getFirst().id, vehicle.routes.get(2).id);
             e.cars++;
             vehicle.current_edge = e;
         }
         else
             vehicle.current_edge.cars--;
-
     }
 
     public void run() {
