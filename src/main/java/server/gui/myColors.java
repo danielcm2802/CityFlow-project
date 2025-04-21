@@ -13,5 +13,5 @@ public class myColors {
     public static Color nodeColor = new Color(0x648098);
     public static Color roadColor = new Color(0x5B6770);
     public static Color nodeOutlineColor = new Color(0x3F565C);
-    public static Color selectedColor = new Color(0xFFC857);
+    public static Color carColor = new Color(0xFFC857);
 }

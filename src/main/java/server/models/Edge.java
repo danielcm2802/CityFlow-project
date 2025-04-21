@@ -7,14 +7,17 @@ public class Edge {
     public int cars;
     public int length;
     public int speed_limit;
+    public int total_cars;
 
     public Edge(int from, int to, short lanes, int length, int speed_limit) {
         this.from = from;
         this.to = to;
         this.lanes = lanes;
         this.cars = 0;
+        this.total_cars = 0;
         this.length = length;
         this.speed_limit = speed_limit;
+
     }
 
     public float calculateWeight() {

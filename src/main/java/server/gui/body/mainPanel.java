@@ -2,17 +2,21 @@ package server.gui.body;
 
 import server.gui.myColors;
 import server.models.Graph;
+import server.models.Vehicle;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
 
 public class mainPanel extends JPanel {
-    public mainPanel(Graph cityGraph) {
+    public CityMap cityMap;
+
+    public mainPanel(Graph cityGraph, ArrayList<Vehicle> vehicles) {
         this.setBackground(myColors.primaryColor);
         this.setLayout(new BorderLayout());
 
         // Create the CityMap and keep it fixed size
-        CityMap cityMap = new CityMap(cityGraph);
+        cityMap = new CityMap(cityGraph, vehicles);
 
         // Wrapper to center it using FlowLayout
         JPanel mapWrapper = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 20));
@@ -29,6 +33,8 @@ public class mainPanel extends JPanel {
         mapWrapper.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
         mapWrapper.setBackground(new Color(255, 255, 255, 230)); // Slight transparency
         mapWrapper.setLayout(new GridBagLayout()); // Perfect center
+
+
 
         // Optional bottom panel for buttons or future UI
         JPanel bottomPanel = new JPanel();

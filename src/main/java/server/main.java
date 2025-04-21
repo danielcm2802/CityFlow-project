@@ -2,10 +2,7 @@ package server;
 
 import server.algo.CityBuilder;
 import server.algo.MinCostRoute;
-import server.models.Graph;
-import server.models.RoadType;
-import server.models.Route;
-import server.models.Vehicle;
+import server.models.*;
 
 import java.util.LinkedList;
 import java.util.Random;
@@ -23,12 +20,10 @@ public class main {
 
 
 
-
-
-        for(int i=0;i<20;i++) {
+        for(int i=0;i<30;i++) {
             ms.add_vehicle(i, r.nextInt(19), r.nextInt(19));
             try {
-                sleep(1000);
+                sleep(100);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
