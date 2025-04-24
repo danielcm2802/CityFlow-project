@@ -1,4 +1,4 @@
-package server.models;
+package model;
 
 public enum RoadType {
     Road,

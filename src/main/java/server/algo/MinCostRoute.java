@@ -1,7 +1,8 @@
 package server.algo;
+import model.RoadType;
+import model.Route;
 import server.models.*;
 
-import java.time.Duration;
 import java.time.LocalTime;
 import java.util.*;
 
@@ -50,7 +51,7 @@ public class MinCostRoute {
         path.addFirst(new Route(RoadType.Intersection,destination, 0));
         int current = destination;
         while (parent[current] != -1) {
-            path.addFirst(new Route(RoadType.Road,-1, distance[current]-distance[parent[current]]));
+            path.addFirst(new Route(RoadType.Road,-1, distance[current]-distance[parent[current]]-graph.vertices.get(current).calculateWeight()));
             graph.findEdge(parent[current], current).total_cars++;
             current = parent[current];
             path.addFirst(new Route(RoadType.Intersection,current,graph.vertices.get(current).calculateWeight()));
@@ -68,12 +69,16 @@ public class MinCostRoute {
         int[] parent = new int[graph.vertices.size()];
         float[] distance = new float[graph.vertices.size()];
         Edge[] fromParent = new Edge[graph.vertices.size()];
-
+        float[] averagelanes = new float[graph.vertices.size()];
+        int[] roadsfromsource = new int[graph.vertices.size()];
         for (int i = 0; i < graph.vertices.size(); i++) {
             visited[i] = false;
             parent[i] = -1;
             distance[i] = Float.MAX_VALUE;
             fromParent[i] = null;
+            averagelanes[i] = 0;
+            roadsfromsource[i] = 0;
+
         }
 
         //building priority queue based on the parameters
@@ -87,16 +92,11 @@ public class MinCostRoute {
                             Math.round(distance[o2]+heuristic(o1,destination))) {
                         return 1;
                     }
-                    if(fromParent[o1]!=null && fromParent[o2]!=null){
-                         if (fromParent[o1].total_cars < fromParent[o2].total_cars) {
-                             return -1;
-                         }
-                        if (fromParent[o1].total_cars > fromParent[o2].total_cars) {
-                            return 1;
-                        }
-                        return 0;
-                    }
-                    return -1;
+//                    if(fromParent[o1]!=null && fromParent[o2]!=null){
+//                         return fromParent[o1].lanes-fromParent[o2].lanes;
+//                    }
+//                    return -1;
+                    return (int)(averagelanes[o1]*10 - averagelanes[o2]*10);
 
                 }
         );
@@ -123,6 +123,8 @@ public class MinCostRoute {
                                 futureTraffic.vertices.get(current).calculateWeight();
                         parent[e.to] = current;
                         fromParent[e.to] = e;
+                        roadsfromsource[e.to] = roadsfromsource[current]+1;
+                        averagelanes[e.to] = (averagelanes[current]*roadsfromsource[current] + e.lanes)/roadsfromsource[e.to];
                     }
                     queue.add(e.to);
                     found = (e.to==destination);
@@ -130,6 +132,7 @@ public class MinCostRoute {
             }
             visited[current] = true;
         }
+
         //creates rout based on the parent and distance arrays
         return createPath(graph,parent,distance,destination);
     }

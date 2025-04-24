@@ -27,10 +27,12 @@ public class TrafficManager extends Thread {
         if(vehicle.routes.getFirst().id != -1) {
             Edge e = graph.findEdge(vehicle.routes.getFirst().id, vehicle.routes.get(2).id);
             e.cars++;
+            if ((vehicle.current_edge != null)) {
+                vehicle.current_edge.cars--;
+            }
             vehicle.current_edge = e;
         }
         else {
-            vehicle.current_edge.cars--;
             vehicle.current_edge.total_cars--;
         }
 

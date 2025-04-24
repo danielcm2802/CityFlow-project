@@ -1,14 +1,13 @@
 package server;
 
+import model.Route;
 import server.algo.CityBuilder;
 import server.algo.MinCostRoute;
 import server.algo.TrafficManager;
 import server.gui.MainWindow;
 import server.models.Graph;
-import server.models.Route;
 import server.models.Vehicle;
 
-import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
@@ -26,17 +25,15 @@ public class MainSystem {
         tm.start();
     }
 
-    public void add_vehicle(int id,int source, int destination) {
+    public LinkedList<Route> add_vehicle(int id, int source, int destination) {
         synchronized (vehiclesRoutes) {
             Vehicle vehicle = new Vehicle(id, MinCostRoute.findMinCostRoute(this.cityGraph, vehiclesRoutes, source, destination));
             this.vehiclesRoutes.addLast(vehicle);
             System.out.println("vehicle " + id + " added: "+ source + " -> " + destination);
+            return vehicle.routes;
         }
 
     }
 
-    public void remove_vehicle(int indx) {
-        this.vehiclesRoutes.remove(indx);
-    }
 
 }

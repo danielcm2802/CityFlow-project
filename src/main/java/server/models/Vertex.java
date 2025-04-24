@@ -22,7 +22,7 @@ public class Vertex {
 
     //function calculates weight of the vertex based on the junction O(1)
     public float calculateWeight() {
-        return 10 + (has_lights ? 40 : 0);
+        return 10 + (has_lights ? 20 : 0);
     }
 
     //function adds a new edge coming out of the current vertex O(1)

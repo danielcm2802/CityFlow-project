@@ -1,9 +1,12 @@
 package server.models;
 
 
+import model.Route;
+
 import java.time.*;
 import java.util.LinkedList;
 
+//class that represents a vehicle on the city road
 public class Vehicle{
     public int id;
     public LinkedList<Route> routes;
@@ -22,10 +25,13 @@ public class Vehicle{
         this.next_removal = Start_time.plusSeconds((long)this.routes.getFirst().seconds);
     }
 
+    //calculates the ETA of a vehicle to it's destination
     public float calcTime() {
         return (float) routes.stream().mapToDouble(route -> route.seconds).sum();
     };
 
+
+    //deletes the section that the vehicle passed
     public void removeRouteSection() {
         this.last_route_id = this.routes.getFirst().id;
         this.routes.removeFirst();
@@ -33,6 +39,7 @@ public class Vehicle{
         System.out.println("vehicle " +this.id+ " got to: " + this.routes.getFirst().id);
     }
 
+    //prints route
     public void printRoute() {
         for (Route route : this.routes) {
             System.out.println(route);
