@@ -92,10 +92,6 @@ public class MinCostRoute {
                             Math.round(distance[o2]+heuristic(o1,destination))) {
                         return 1;
                     }
-//                    if(fromParent[o1]!=null && fromParent[o2]!=null){
-//                         return fromParent[o1].lanes-fromParent[o2].lanes;
-//                    }
-//                    return -1;
                     return (int)(averagelanes[o1]*10 - averagelanes[o2]*10);
 
                 }

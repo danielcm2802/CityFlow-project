@@ -2,15 +2,16 @@ package client.gui.body;
 
 import client.ServerConn;
 import client.gui.myColors;
-import server.Server;
-import server.models.Graph;
-import server.models.Vehicle;
+import model.Route;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedList;
 
 public class mainPanel extends JPanel implements ActionListener {
 
@@ -18,8 +19,15 @@ public class mainPanel extends JPanel implements ActionListener {
     public JComboBox<Integer> destBox;
     public JButton submitButton;
     public ServerConn serverConn;
+    public HashMap<String,Integer> gridSize;
     public mainPanel(ServerConn server) {
         serverConn = server;
+        try {
+            gridSize = serverConn.getGridSize();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
         this.setBackground(myColors.primaryColor);
         this.setLayout(new GridBagLayout());
 
@@ -45,7 +53,7 @@ public class mainPanel extends JPanel implements ActionListener {
         gbc.gridx = 0;
         gbc.gridy = 1;
         sourceBox = new JComboBox<>();
-        for (int i = 0; i <= 20; i++) {
+        for (int i = 0; i < gridSize.get("GRID_SIZE"); i++) {
             sourceBox.addItem(i);
         }
         sourceBox.setBackground(myColors.secondaryColor);
@@ -56,7 +64,7 @@ public class mainPanel extends JPanel implements ActionListener {
         //cobox dest
         gbc.gridx = 1;
         destBox = new JComboBox<>();
-        for (int i = 0; i <= 20; i++) {
+        for (int i = 0; i < gridSize.get("GRID_SIZE"); i++) {
             destBox.addItem(i);
         }
         destBox.setBackground(myColors.secondaryColor);
@@ -70,6 +78,7 @@ public class mainPanel extends JPanel implements ActionListener {
         gbc.gridwidth = 2;
         gbc.weightx = 1.0;
         submitButton = new JButton("Submit");
+        submitButton.addActionListener(this);
         submitButton.setBackground(myColors.highlightColor);
         submitButton.setForeground(myColors.primaryColor);
         submitButton.setFocusPainted(false);
@@ -79,8 +88,171 @@ public class mainPanel extends JPanel implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == submitButton) {
+        if (e.getSource() == submitButton && sourceBox.getSelectedIndex() != destBox.getSelectedIndex(  )) {
+            System.out.println("pp");
+            System.out.println("source: " + sourceBox.getSelectedIndex());
+            System.out.println("dest: " + destBox.getSelectedIndex());
+            LinkedList<Route> route;
+            try {
+                route = serverConn.getRoute(sourceBox.getSelectedIndex(),destBox.getSelectedIndex());
+                System.out.println(route);
+            } catch (IOException ex) {
+                System.out.println("error");
+                return;
+            }
+            this.removeAll();
+
+            ImageIcon imageIcon = new ImageIcon(getClass().getResource("/leftTurn.png")); // Replace with actual path
+
+            JPanel scrollContent = new JPanel();
+            scrollContent.setLayout(new BoxLayout(scrollContent, BoxLayout.Y_AXIS));
+            scrollContent.setBackground(myColors.primaryColor);
+
+            convert_toistructions(route,scrollContent);
+
+            JPanel wrapperPanel = new JPanel(new GridBagLayout());
+            wrapperPanel.setBackground(myColors.primaryColor);
+            wrapperPanel.add(scrollContent);
+
+            JScrollPane scrollPane = new JScrollPane(wrapperPanel);
+            scrollPane.setBorder(BorderFactory.createEmptyBorder());
+            scrollPane.getVerticalScrollBar().setUnitIncrement(16);
+
+            this.setLayout(new BorderLayout());
+            this.add(scrollPane, BorderLayout.CENTER);
+            this.revalidate(); // Refresh the layout
+            this.repaint();
+
 
         }
     }
+
+    private void addDiraction(JPanel scrollContent, ImageIcon imageIcon,String title, String description) {
+        JPanel itemPanel = new JPanel(new BorderLayout());
+        itemPanel.setBackground(new Color(28, 28, 28));
+        itemPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        itemPanel.setPreferredSize(new Dimension(400, 80)); // Width: 400px, Height: adjust as needed
+
+
+        JPanel textPanel = new JPanel();
+        textPanel.setLayout(new BoxLayout(textPanel, BoxLayout.Y_AXIS));
+        textPanel.setBackground(Color.DARK_GRAY);
+
+        JLabel titleLabel = new JLabel(title);
+        titleLabel.setForeground(Color.WHITE);
+        titleLabel.setFont(new Font("SansSerif", Font.BOLD, 16));
+
+        JLabel subtitleLabel = new JLabel(description);
+        subtitleLabel.setForeground(Color.WHITE);
+        subtitleLabel.setFont(new Font("SansSerif", Font.PLAIN, 12));
+
+        textPanel.add(titleLabel);
+        textPanel.add(Box.createRigidArea(new Dimension(0, 4))); // spacing
+        textPanel.add(subtitleLabel);
+
+
+        JLabel imageLabel = new JLabel();
+        imageLabel.setIcon(imageIcon);
+        imageLabel.setHorizontalAlignment(SwingConstants.RIGHT);
+        imageLabel.setVerticalAlignment(SwingConstants.CENTER);
+
+        itemPanel.add(textPanel, BorderLayout.WEST);
+        itemPanel.add(imageLabel, BorderLayout.EAST);
+
+        scrollContent.add(itemPanel);
+        scrollContent.add(Box.createRigidArea(new Dimension(0, 8))); // space between items
+    }
+
+    private void convert_toistructions(LinkedList<Route> route,JPanel scrollContent) {
+        Iterator<Route> iterator = route.iterator();
+        Iterator<Route> iterator2 = route.iterator();
+        iterator2.next();
+        int counter = 1;
+        char turn = '/';
+        ImageIcon[] imageIcon = new ImageIcon[3];
+        imageIcon[0] = new ImageIcon(getClass().getResource("/leftTurn.png"));
+        imageIcon[1] = new ImageIcon(getClass().getResource("/rightTurn.png"));
+        imageIcon[2] = new ImageIcon(getClass().getResource("/straitTurn.png"));
+        Route route1;
+        Route route2;
+        boolean found = false;
+        while (iterator.hasNext()&&!found) {
+            route1 = iterator.next();
+
+            if(!iterator2.hasNext()) {
+                found = true;
+                continue;
+            }
+            iterator2.next();
+            route2 = iterator2.next();
+
+            if(route1.id%gridSize.get("COLS") == route2.id%gridSize.get("COLS")) {
+                if(route1.id>route2.id) {
+                    if(turn == '/' || turn == 'N')
+                        addDiraction(scrollContent,imageIcon[2],
+                                counter+". continue on "+ route2.id%gridSize.get("COLS")+1 + " Ave.",
+                                "current node: "+route1.id);
+                    if(turn == 'W')
+                        addDiraction(scrollContent,imageIcon[1],
+                                counter+". turn right to "+ route2.id%gridSize.get("COLS")+1 + " Ave.",
+                                "current node: "+route1.id);
+                    if(turn == 'E')
+                        addDiraction(scrollContent,imageIcon[0],
+                                counter+". turn left to "+ route2.id%gridSize.get("COLS")+1 + " Ave.",
+                                "current node: "+route1.id);
+                    turn = 'N';
+                }
+                if(route1.id<route2.id) {
+                    if(turn == '/' || turn == 'S')
+                        addDiraction(scrollContent,imageIcon[2],
+                                counter+". continue on "+ route2.id%gridSize.get("COLS")+1 + " Ave.",
+                                "current node: "+route1.id);
+                    if(turn == 'E')
+                        addDiraction(scrollContent,imageIcon[1],
+                                counter+". turn right to "+ route2.id%gridSize.get("COLS")+1 + " Ave.",
+                                "current node: "+route1.id);
+                    if(turn == 'W')
+                        addDiraction(scrollContent,imageIcon[0],
+                                counter+". turn left to "+ route2.id%gridSize.get("COLS")+1 + " Ave.",
+                                "current node: "+route1.id);
+                    turn = 'S';
+                }
+
+            }
+            else if(route1.id<route2.id) {
+                if(turn == '/' || turn == 'E')
+                    addDiraction(scrollContent,imageIcon[2],
+                            counter+". continue on "+ route2.id/gridSize.get("COLS")+1 + " st.",
+                            "current node: "+route1.id);
+                if(turn == 'N')
+                    addDiraction(scrollContent,imageIcon[1],
+                            counter+". turn right to "+ route2.id/gridSize.get("COLS")+1 + " st.",
+                            "current node: "+route1.id);
+                if(turn == 'S')
+                    addDiraction(scrollContent,imageIcon[0],
+                            counter+". turn left to "+ route2.id/gridSize.get("COLS")+1 + " st.",
+                            "current node: "+route1.id);
+                turn = 'E';
+            }
+            else if(route1.id>route2.id) {
+                if(turn == '/' || turn == 'W')
+                    addDiraction(scrollContent,imageIcon[2],
+                            counter+". continue on "+ route2.id/gridSize.get("COLS")+1 + " st.",
+                            "current node: "+route1.id);
+                if(turn == 'S')
+                    addDiraction(scrollContent,imageIcon[1],
+                            counter+". turn right to "+ route2.id/gridSize.get("COLS")+1 + " st.",
+                            "current node: "+route1.id);
+                if(turn == 'N')
+                    addDiraction(scrollContent,imageIcon[0],
+                            counter+". turn left to "+ route2.id/gridSize.get("COLS")+1 + " st.",
+                            "current node: "+route1.id);
+                turn = 'W';
+            }
+            counter++;
+            iterator.next();
+        }
+
+    }
+
 }

@@ -27,6 +27,8 @@ public class Server extends Thread {
         HashMap<String,Object> response = new HashMap<>();
         if(msg.containsKey("GRID_SIZE")) {
             response.put("GRID_SIZE",mainSystem.cityGraph.rows*mainSystem.cityGraph.cols);
+            response.put("ROWS",mainSystem.cityGraph.rows);
+            response.put("COLS",mainSystem.cityGraph.cols);
         }
         if(msg.containsKey("GET_ROUTE")) {
             response.put("ROUTE",mainSystem.add_vehicle(count,(int)msg.get("SOURCE"), (int) msg.get("DEST")));
@@ -58,10 +60,5 @@ public class Server extends Thread {
                 throw new RuntimeException(e);
             }
         }
-    }
-
-    public static void main(String[] args) {
-        Server server = new Server();
-        server.start();
     }
 }

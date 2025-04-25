@@ -19,11 +19,15 @@ public class ServerConn {
     public ServerConn() {
     }
 
-    public int getGridSize() throws IOException {
+    public HashMap<String,Integer> getGridSize() throws IOException {
         HashMap<String,Object> map = new HashMap<>();
         map.put("GRID_SIZE", "");
         map = send_msg(map);
-        return (int)map.get("GRID_SIZE");
+        HashMap<String,Integer> gridSize = new HashMap<>();
+        gridSize.put("GRID_SIZE",(int)map.get("GRID_SIZE"));
+        gridSize.put("ROWS",(int)map.get("ROWS"));
+        gridSize.put("COLS",(int)map.get("COLS"));
+        return gridSize;
     }
     public LinkedList<Route> getRoute(int source, int destination) throws IOException {
         HashMap<String,Object> map = new HashMap<>();

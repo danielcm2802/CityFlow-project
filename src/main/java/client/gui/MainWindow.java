@@ -3,12 +3,9 @@ package client.gui;
 import client.ServerConn;
 import client.gui.body.mainPanel;
 import client.gui.navBar.navigationBar;
-import server.models.Graph;
-import server.models.Vehicle;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.ArrayList;
 
 public class MainWindow extends JFrame {
     public navigationBar navBar;

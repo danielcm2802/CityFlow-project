@@ -28,9 +28,10 @@ public class MainSystem {
     public LinkedList<Route> add_vehicle(int id, int source, int destination) {
         synchronized (vehiclesRoutes) {
             Vehicle vehicle = new Vehicle(id, MinCostRoute.findMinCostRoute(this.cityGraph, vehiclesRoutes, source, destination));
+            LinkedList<Route> routes = new LinkedList<>(vehicle.routes);
             this.vehiclesRoutes.addLast(vehicle);
             System.out.println("vehicle " + id + " added: "+ source + " -> " + destination);
-            return vehicle.routes;
+            return routes;
         }
 
     }
