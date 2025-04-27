@@ -10,6 +10,7 @@ import java.net.Socket;
 import java.util.HashMap;
 import java.util.LinkedList;
 
+//the client side of the server connection
 public class ServerConn {
     private Socket socket;
     private ObjectInputStream in;
@@ -19,6 +20,8 @@ public class ServerConn {
     public ServerConn() {
     }
 
+
+    //asks for the grid size
     public HashMap<String,Integer> getGridSize() throws IOException {
         HashMap<String,Object> map = new HashMap<>();
         map.put("GRID_SIZE", "");
@@ -29,6 +32,8 @@ public class ServerConn {
         gridSize.put("COLS",(int)map.get("COLS"));
         return gridSize;
     }
+
+    //asks for route for the current user
     public LinkedList<Route> getRoute(int source, int destination) throws IOException {
         HashMap<String,Object> map = new HashMap<>();
         map.put("GET_ROUTE", "");
@@ -38,6 +43,7 @@ public class ServerConn {
         return (LinkedList<Route>)map.get("ROUTE");
     }
 
+    //sends the message
     public HashMap<String,Object> send_msg(HashMap<String,Object> map) throws IOException {
         try {
             socket = new Socket("127.0.0.1",5000);

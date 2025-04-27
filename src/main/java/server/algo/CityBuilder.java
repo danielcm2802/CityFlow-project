@@ -37,6 +37,7 @@ public class CityBuilder {
         return graph;
     }
 
+    // resets the number of vehicles in the city
     public static void reset_city(Graph cityGraph){
         for(Vertex v: cityGraph.vertices){
             for (Edge e: v.adjacent_edges){

@@ -36,7 +36,7 @@ public class Vehicle{
         this.last_route_id = this.routes.getFirst().id;
         this.routes.removeFirst();
         this.next_removal = this.next_removal.plusSeconds((long)this.routes.getFirst().seconds);
-        System.out.println("vehicle " +this.id+ " got to: " + this.routes.getFirst().id);
+        System.out.println("[T-MANAGER]:"+"vehicle " +this.id+ " got to: " + this.routes.getFirst().id);
     }
 
     //prints route

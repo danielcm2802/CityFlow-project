@@ -13,6 +13,7 @@ import java.time.Duration;
 import java.time.LocalTime;
 import java.util.ArrayList;
 
+//class that draws the city map graphicaly
 public class CityMap extends JPanel {
     public Graph cityGraph;
     public ArrayList<Vehicle> vehicles;
@@ -33,13 +34,14 @@ public class CityMap extends JPanel {
         drawCityMap((Graphics2D) g);
     }
 
+    //draws the city map
     private void drawCityMap(Graphics2D g2d) {
-//       cityGraph.printForApp();
         float xsize = cityGraph.vertices.getLast().x_cord;
         float ysize = cityGraph.vertices.getLast().y_cord;
         int x1,y1,x2,y2;
         int margx,margy;
 
+        //adds vertexes
         g2d.setStroke(new BasicStroke(5));
         for(Vertex v : cityGraph.vertices) {
             for (Edge e: v.adjacent_edges){
@@ -54,9 +56,10 @@ public class CityMap extends JPanel {
                         Math.max(103-5*e.total_cars,0),
                         Math.max(112-5*e.total_cars,0)));
                 g2d.drawLine(x1, y1, x2, y2);
-//                System.out.println("x1: " + x1 + " y1: " + y1 + " x2: " + x2 + " y2: " + y2);
             }
         }
+
+        //adds edges
         for (Vertex v : cityGraph.vertices) {
             x1 = Math.round((v.x_cord / xsize) * (width - 45))+10;
             y1 = Math.round((v.y_cord / ysize) * (height - 45))+10;
@@ -66,6 +69,8 @@ public class CityMap extends JPanel {
             g2d.fillOval(x1, y1, 20, 20);
 
         }
+
+        //adds the vehicles
         g2d.setColor(myColors.carColor);
         synchronized (vehicles) {
             for (Vehicle v : vehicles) {

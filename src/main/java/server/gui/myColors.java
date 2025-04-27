@@ -2,6 +2,7 @@ package server.gui;
 
 import java.awt.*;
 
+//color palet of the project
 public class myColors {
     public static Color primaryColor   = new Color(0x1B2A49);
     public static Color secondaryColor = new Color(0x2A3E5C);

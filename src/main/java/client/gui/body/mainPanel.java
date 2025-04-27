@@ -13,6 +13,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 
+//main panel of the application.
+//shows the main part of the interface of a user
 public class mainPanel extends JPanel implements ActionListener {
 
     public JComboBox<Integer> sourceBox;
@@ -102,12 +104,12 @@ public class mainPanel extends JPanel implements ActionListener {
             }
             this.removeAll();
 
-            ImageIcon imageIcon = new ImageIcon(getClass().getResource("/leftTurn.png")); // Replace with actual path
 
             JPanel scrollContent = new JPanel();
             scrollContent.setLayout(new BoxLayout(scrollContent, BoxLayout.Y_AXIS));
             scrollContent.setBackground(myColors.primaryColor);
 
+            //convert linked list to the diraction route
             convert_toistructions(route,scrollContent);
 
             JPanel wrapperPanel = new JPanel(new GridBagLayout());
@@ -127,11 +129,12 @@ public class mainPanel extends JPanel implements ActionListener {
         }
     }
 
+    //adds a diraction panel based on the information and adds it to the scrollable panel
     private void addDiraction(JPanel scrollContent, ImageIcon imageIcon,String title, String description) {
         JPanel itemPanel = new JPanel(new BorderLayout());
         itemPanel.setBackground(new Color(28, 28, 28));
         itemPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-        itemPanel.setPreferredSize(new Dimension(400, 80)); // Width: 400px, Height: adjust as needed
+        itemPanel.setPreferredSize(new Dimension(400, 120));
 
 
         JPanel textPanel = new JPanel();
@@ -147,7 +150,7 @@ public class mainPanel extends JPanel implements ActionListener {
         subtitleLabel.setFont(new Font("SansSerif", Font.PLAIN, 12));
 
         textPanel.add(titleLabel);
-        textPanel.add(Box.createRigidArea(new Dimension(0, 4))); // spacing
+        textPanel.add(Box.createRigidArea(new Dimension(0, 4)));
         textPanel.add(subtitleLabel);
 
 
@@ -160,9 +163,10 @@ public class mainPanel extends JPanel implements ActionListener {
         itemPanel.add(imageLabel, BorderLayout.EAST);
 
         scrollContent.add(itemPanel);
-        scrollContent.add(Box.createRigidArea(new Dimension(0, 8))); // space between items
+        scrollContent.add(Box.createRigidArea(new Dimension(0, 8)));
     }
 
+    //convert the linked list to diractions and adds the instructions to the scrollable panel
     private void convert_toistructions(LinkedList<Route> route,JPanel scrollContent) {
         Iterator<Route> iterator = route.iterator();
         Iterator<Route> iterator2 = route.iterator();
@@ -173,7 +177,7 @@ public class mainPanel extends JPanel implements ActionListener {
         imageIcon[0] = new ImageIcon(getClass().getResource("/leftTurn.png"));
         imageIcon[1] = new ImageIcon(getClass().getResource("/rightTurn.png"));
         imageIcon[2] = new ImageIcon(getClass().getResource("/straitTurn.png"));
-        Route route1;
+        Route route1=null;
         Route route2;
         boolean found = false;
         while (iterator.hasNext()&&!found) {
@@ -252,6 +256,9 @@ public class mainPanel extends JPanel implements ActionListener {
             counter++;
             iterator.next();
         }
+
+        addDiraction(scrollContent,new ImageIcon(getClass().getResource("/checkflag.png"))
+        ,"got to your destination","final node: " + route1.id);
 
     }
 

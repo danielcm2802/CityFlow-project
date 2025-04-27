@@ -5,6 +5,7 @@ import client.gui.myColors;
 import javax.swing.*;
 import java.awt.*;
 
+//the nav bar of the application
 public class navigationBar extends JPanel {
     JLabel navBarLabel;
     public navigationBar() {

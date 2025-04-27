@@ -7,6 +7,7 @@ import client.gui.navBar.navigationBar;
 import javax.swing.*;
 import java.awt.*;
 
+//the window of the application
 public class MainWindow extends JFrame {
     public navigationBar navBar;
     public mainPanel mainPanel;

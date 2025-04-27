@@ -8,6 +8,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
 
+// the body of the aplication
 public class mainPanel extends JPanel {
     public CityMap cityMap;
 
@@ -15,10 +16,8 @@ public class mainPanel extends JPanel {
         this.setBackground(myColors.primaryColor);
         this.setLayout(new BorderLayout());
 
-        // Create the CityMap and keep it fixed size
+        //adds city map
         cityMap = new CityMap(cityGraph, vehicles);
-
-        // Wrapper to center it using FlowLayout
         JPanel mapWrapper = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 20));
         mapWrapper.setOpaque(false);
         JPanel cityMapCard = new JPanel();
@@ -31,14 +30,13 @@ public class mainPanel extends JPanel {
         cityMapCard.add(cityMap, BorderLayout.CENTER);
         mapWrapper.add(cityMapCard);
         mapWrapper.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
-        mapWrapper.setBackground(new Color(255, 255, 255, 230)); // Slight transparency
-        mapWrapper.setLayout(new GridBagLayout()); // Perfect center
+        mapWrapper.setBackground(new Color(255, 255, 255, 230));
+        mapWrapper.setLayout(new GridBagLayout());
 
 
 
-        // Optional bottom panel for buttons or future UI
         JPanel bottomPanel = new JPanel();
-        bottomPanel.setOpaque(false); // Keep background
+        bottomPanel.setOpaque(false);
 
         this.add(mapWrapper, BorderLayout.CENTER);
         this.add(bottomPanel, BorderLayout.SOUTH);

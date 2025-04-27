@@ -11,6 +11,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
 
+//the window of the aplication
 public class MainWindow extends JFrame {
     navigationBar navBar;
     mainPanel mainPanel;
@@ -37,7 +38,4 @@ public class MainWindow extends JFrame {
         cityMap.repaint();
     }
 
-//    public static void main(String[] args) {
-//        new MainWindow(CityBuilder.build_city_Grid(5,4, 30, (short) 2, 15, (short) 1));
-//    }
 }

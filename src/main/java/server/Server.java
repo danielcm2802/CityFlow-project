@@ -5,6 +5,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.HashMap;
 
+//server that listening for clients to connect
 public class Server extends Thread {
     public MainSystem mainSystem;
     private ServerSocket server;
@@ -23,6 +24,10 @@ public class Server extends Thread {
         }
     }
 
+    // handles the messages from clients.
+    //2 types of messages:
+    //GRID_SIZE: gives the grid size and dimensions of the city
+    //GET_ROUTE: connects vehicle to the city and returns the route of the vehicle
     public HashMap<String,Object> handle_msg(HashMap<String,Object> msg) {
         HashMap<String,Object> response = new HashMap<>();
         if(msg.containsKey("GRID_SIZE")) {
@@ -37,6 +42,7 @@ public class Server extends Thread {
         return response;
     }
 
+    //the loop that listens for clients to connect
     @Override
     public void run() {
         while(true) {
@@ -46,7 +52,7 @@ public class Server extends Thread {
                         client.getInputStream()));
                 HashMap<String,Object> msg = (HashMap<String, Object>) in.readObject();
 
-                System.out.println(client + ": " + msg);
+                System.out.println("[SERVER]: "+client + ": " + msg);
                 HashMap<String,Object> response =  handle_msg(msg);
 
                 out = new ObjectOutputStream(client.getOutputStream());
