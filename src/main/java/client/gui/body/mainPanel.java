@@ -90,14 +90,10 @@ public class mainPanel extends JPanel implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == submitButton && sourceBox.getSelectedIndex() != destBox.getSelectedIndex(  )) {
-            System.out.println("pp");
-            System.out.println("source: " + sourceBox.getSelectedIndex());
-            System.out.println("dest: " + destBox.getSelectedIndex());
+        if (e.getSource() == submitButton && sourceBox.getSelectedIndex() != destBox.getSelectedIndex()) {
             LinkedList<Route> route;
             try {
                 route = serverConn.getRoute(sourceBox.getSelectedIndex(),destBox.getSelectedIndex());
-                System.out.println(route);
             } catch (IOException ex) {
                 System.out.println("error");
                 return;

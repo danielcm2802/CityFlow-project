@@ -26,6 +26,11 @@ public class MinCostRoute {
         }
     }
 
+    private static boolean isGoodFlow(Edge edge){
+        float density = edge.cars/(edge.lanes*edge.length/5);
+        return density < 0.9;
+    }
+
     private static void putOnMap(Vehicle vehicle, LocalTime Wanted_time) {
         LocalTime next_time = vehicle.next_removal;
         int pos = 0;
@@ -111,7 +116,7 @@ public class MinCostRoute {
             int current = queue.poll();
             getFutureTraffic(vehicles,LocalTime.now().plusSeconds((long)distance[current]));
             for(Edge e : graph.vertices.get(current).adjacent_edges) {
-                if(!visited[e.to]){
+                if(!visited[e.to] && isGoodFlow(e)){
                     queue.remove(e.to);
                     if(e.calculateWeight()+distance[current] +
                             futureTraffic.vertices.get(current).calculateWeight() < distance[e.to]){
