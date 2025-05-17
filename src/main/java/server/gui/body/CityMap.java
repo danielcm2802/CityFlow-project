@@ -52,7 +52,7 @@ public class CityMap extends JPanel {
                 y1 = Math.round((v.y_cord / ysize) * (height - 45))+10+margy;
                 x2 = Math.round((v2.x_cord / xsize) * (width - 45))+10+margx;
                 y2 = Math.round((v2.y_cord / ysize) * (height - 45))+10+margy;
-                g2d.setColor(new Color(Math.min(91+5*e.total_cars,255),
+                g2d.setColor(new Color(Math.min(91+7*e.total_cars,255),
                         Math.max(103-5*e.total_cars,0),
                         Math.max(112-5*e.total_cars,0)));
                 g2d.drawLine(x1, y1, x2, y2);

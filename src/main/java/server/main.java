@@ -12,15 +12,16 @@ public class main {
         server.start();
 
 
-//        Random r = new Random();
-//        for(int i=0;i<100;i++) {
-//            server.mainSystem.add_vehicle(i, r.nextInt(29), r.nextInt(29));
-//            try {
-//                sleep(100*(i%10+1));
-//            } catch (InterruptedException e) {
-//                throw new RuntimeException(e);
-//            }
-//        }
+        Random r = new Random();
+        for(int i=0;i<100;i++) {
+            server.mainSystem.add_vehicle(i, r.nextInt(29), r.nextInt(29));
+
+            try {
+                sleep(100*(i%10+1));
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        }
 
     }
 }
